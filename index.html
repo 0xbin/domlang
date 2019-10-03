@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>FoundationJS</title>
+        <style type="text/css">
+            /** {*/
+            /*    box-sizing: border-box;*/
+            /*}*/
+            /*body {*/
+            /*    padding: 0;*/
+            /*    margin: 0;*/
+            /*}*/
+            /*#wrap {*/
+            /*    display: flex;*/
+            /*}*/
+            /*#editor, #view {*/
+            /*    flex-grow: 1;*/
+            /*    height: 100vh;*/
+            /*    padding: 20px;*/
+            /*}*/
+            /*#editor {*/
+            /*    resize: none;*/
+            /*}*/
+        </style>
+    </head>
+    <body>
+        <!--<div id="wrap">-->
+        <!--    <textarea id="editor"></textarea>-->
+        <!--    <div id="view"></div>-->
+        <!--</div>-->
+        
+        <div id="wrap">
+            <p>hello</p>
+        </div>
+        
+        
+        <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
+        <script type="text/javascript" src="dest/domlang.min.js"></script>
+    
+        <script type="text/javascript">
+            // var converter = new showdown.Converter();
+            // $("#editor").on("keyup", function() {
+            //     $("#view").render(converter.makeHtml(this.val()))
+            // });
+            
+            
+            $("#wrap").html("<h1>hello</h1>");
+            
+        
+        </script>
+    </body>
+</html>
