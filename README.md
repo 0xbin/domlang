@@ -7,14 +7,14 @@
 <h3 align="center">DOMLang JS</h3>
 
 <p align="center">
-  A light-weight JavaScript library to creating web app easier.
+  A light-weight JavaScript library to make web development easier.
   <br>
-  <a href="https://getbootstrap.com/docs/4.3/"><strong>Explore domlang docs »</strong></a>
+  <a href="#"><strong>Explore domlang docs »</strong></a>
   <br>
   <br>
-  <a href="https://github.com/twbs/bootstrap/issues/new?template=bug.md">Report bug</a>
+  <a href="https://github.com/0xbin/domlang/issues/new?template=bug.md">Report bug</a>
   ·
-  <a href="https://github.com/twbs/bootstrap/issues/new?template=feature.md&labels=feature">Request feature</a>
+  <a href="https://github.com/0xbin/domlang/issues/new?template=feature.md&labels=feature">Request feature</a>
 </p>
 
 ## Quick start
