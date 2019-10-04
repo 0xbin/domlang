@@ -23,9 +23,9 @@ Clone the github repo `git clone https://github.com/0xWiz/domlang.git` and under
 
 Add it to your HTML as you would add any JavaScript files.
 
-[![Build Status](https://travis-ci.org/0xWiz/domlang.svg?branch=master)](https://travis-ci.org/0xWiz/domlang)
-[![License](https://img.shields.io/github/license/0xWiz/domlang.svg)](https://github.com/0xWiz/domlang/blob/master/LICENSE)
-[![Version](https://img.shields.io/github/release/0xWiz/domlang.svg)](https://github.com/0xWiz/domlang/releases/latest)
+[![Build Status](https://travis-ci.org/0xbin/domlang.svg?branch=master)](https://travis-ci.org/0xbin/domlang)
+[![License](https://img.shields.io/github/license/0xbin/domlang.svg)](https://github.com/0xbin/domlang/blob/master/LICENSE)
+[![Version](https://img.shields.io/github/release/0xbin/domlang.svg)](https://github.com/0xbin/domlang/releases/latest)
 
 
 ## DOM methods
