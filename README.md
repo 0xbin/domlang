@@ -19,9 +19,13 @@
 
 ## Quick start
 
-Clone the github repo `git clone https://github.com/0xWiz/domlang.git` and under the `dest` folder, you can find the minified version of the `domalang`
+Clone the github repo `git clone https://github.com/0xWiz/domlang.git` and under the `dest` folder, you can find the minified version of the `domalang`. Add it to your HTML as you would add any JavaScript files.
 
-Add it to your HTML as you would add any JavaScript files.
+Or use CDN link
+
+```html
+<script src="https://cdn.jsdelivr.net/gh/0xbin/domlang/dest/domlang.min.js"></script>
+```
 
 [![Build Status](https://travis-ci.org/0xbin/domlang.svg?branch=master)](https://travis-ci.org/0xbin/domlang)
 [![License](https://img.shields.io/github/license/0xbin/domlang.svg)](https://github.com/0xbin/domlang/blob/master/LICENSE)
