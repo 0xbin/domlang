@@ -788,6 +788,7 @@
         }
         
         bind(event, callback) {
+            let events = event.split(" ");
             loop(this, function() {
                 $.eventStack.push({
                     "element": this,
@@ -795,24 +796,29 @@
                     "event": event
                 });
                 
-                this.addEventListener(event, function() {
-                    callback.call($(this));
-                }, false);
+                for (let j = 0; j < events.length; j++) {
+                    this.addEventListener(events[j].trim(), function() {
+                        callback.call($(this));
+                    }, false);
+                }
             });
             return this;
         }
         
         unbind(event) {
             let self = this;
+            let events = event.split(" ");
             let toRemoveEvent = [];
             loop(this, function() {
                 let el = this;
-                loop($.eventStack, function(i) {
-                    if ($.isSame(el, this["element"]) && event === this["event"]) {
-                        el.removeEventListener(event, this["callback"]);
-                        toRemoveEvent.push(i);
-                    }
-                });
+                for (let j = 0; j < events.length; j++) {
+                    loop($.eventStack, function(i) {
+                        if ($.isSame(el, this["element"]) && events[j] === this["event"]) {
+                            el.removeEventListener(events[j], this["callback"]);
+                            toRemoveEvent.push(i);
+                        }
+                    });
+                }
             });
             
             loop(toRemoveEvent, function() {
