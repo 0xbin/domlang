@@ -1,11 +1,6 @@
 /* global $ */
 !(function(root, doc) {
     
-    let oldFoundation = null;
-    if ($ !== null || $ !== undefined) {
-        oldFoundation = $;
-    }
-    
     // List of HTML entities for escaping.
     const escapeMap = {
         '&': '&amp;',
