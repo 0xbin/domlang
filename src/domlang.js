@@ -1,5 +1,32 @@
-/* global $ */
-!(function(root, doc) {
+/* global _ */
+!(function() {
+    
+    const _ = function(sel) {
+        return new DOMLang(sel);
+    };
+    
+    // Establish the root object, `window` (`self`) in the browser, `global`
+    // on the server, or `this` in some virtual machines. We use `self`
+    // instead of `window` for `WebWorker` support.
+    const root = typeof self == 'object' && self.self === self && self ||
+            typeof global == 'object' && global.global === global && global ||
+            this ||
+            {};
+    const previousDomLang = root._;
+    
+    // Export the DOMLang object for **Node.js**, with
+    // backwards-compatibility for their old module API. If we're in
+    // the browser, add `_` as a global object.
+    // (`nodeType` is checked to ensure that `module`
+    // and `exports` are not HTML elements.)
+    if (typeof exports != 'undefined' && !exports.nodeType) {
+        if (typeof module != 'undefined' && !module.nodeType && module.exports) {
+            exports = module.exports = _;
+        }
+        exports._ = _;
+    } else {
+        root._ = _;
+    }
     
     // List of HTML entities for escaping.
     const escapeMap = {
@@ -11,27 +38,23 @@
         '`': '&#x60;'
     };
     
-    const $ = function(sel) {
-        return new DOMLang(sel);
-    };
-    
-    $.toObject = function(jsonString) {
+    _.toObject = function(jsonString) {
         return JSON.parse(jsonString);
     };
     
-    $.toJson = function(collec) {
+    _.toJson = function(collec) {
         return JSON.stringify(collec);
     };
     
-    $.toNum = $.toNumber = function(s) {
+    _.toNum = _.toNumber = function(s) {
         return Number(s);
     };
     
-    $.toString = function(collec) {
-        return $.isLoopable(collec) ? JSON.stringify(collec) : collec.toString();
+    _.toString = function(collec) {
+        return _.isLoopable(collec) ? JSON.stringify(collec) : collec.toString();
     };
     
-    $.toArray = function(o) {
+    _.toArray = function(o) {
         const newArray = [];
         loop(o, function() {
             newArray.push(this);
@@ -39,11 +62,11 @@
         return newArray;
     }
     
-    $.isArray = function(o) {
+    _.isArray = function(o) {
         return (o.constructor.name === "HTMLCollection" || o.constructor.name === "NodeList" || Array.isArray(o));
     };
     
-    $.isElement = function(o) {
+    _.isElement = function(o) {
         try {
             //Using W3 DOM2 (works for FF, Opera and Chrome)
             return o instanceof HTMLElement;
@@ -58,35 +81,35 @@
         }
     };
     
-    $.isString = function(o) {
+    _.isString = function(o) {
         return typeof o === "string";
     };
     
-    $.isNumber = $.isNum = function(num) {
+    _.isNumber = _.isNum = function(num) {
         return typeof num === "number";
     };
     
-    $.isEmpty = function(o) {
-        return $.keys(o).length === 0;
+    _.isEmpty = function(o) {
+        return _.keys(o).length === 0;
     };
     
-    $.isEqual = function(o1, o2) {
+    _.isEqual = function(o1, o2) {
         return JSON.stringify(o1) == JSON.stringify((o2));
     };
     
-    $.isFunction = function(method) {
+    _.isFunction = function(method) {
         return method && {}.toString.call(method) === '[object Function]';
     };
     
-    $.isLoopable = $.isIterable = function(o) {
-        return !$.isEmpty(o);
+    _.isLoopable = _.isIterable = function(o) {
+        return !_.isEmpty(o);
     };
     
-    $.isSame = function(o1, o2) {
-        return ($.isElement(o1) && $.isElement(o2)) ? o1.isSameNode(o2) : o1 == o2;
+    _.isSame = function(o1, o2) {
+        return (_.isElement(o1) && _.isElement(o2)) ? o1.isSameNode(o2) : o1 == o2;
     };
     
-    $.escape = function(s) {
+    _.escape = function(s) {
         let newS = s;
         loop(escapeMap, function(key) {
             newS = newS.replace(new RegExp(key, "g"), this);
@@ -94,7 +117,7 @@
         return newS;
     };
     
-    $.unescape = function(s) {
+    _.unescape = function(s) {
         let newS = s;
         loop(escapeMap, function(key) {
             newS = newS.replace(new RegExp(this, "g"), key);
@@ -102,13 +125,13 @@
         return newS;
     };
     
-    $.keys = function(o) {
+    _.keys = function(o) {
         return Object.keys(o);
     };
     
-    $.values = function(o) {
+    _.values = function(o) {
         let vals = [];
-        let keys = $.keys(o);
+        let keys = _.keys(o);
         
         for (let i = 0; i < keys.length; i++) {
             vals.push(o[keys[i]]);
@@ -117,10 +140,10 @@
         return vals;
     };
     
-    $.isContains = function(arr, o) {
+    _.isContains = function(arr, o) {
         let ret = false;
         loop(arr, function() {
-            if($.isSame(this, o)) {
+            if(_.isSame(this, o)) {
                 ret = true;
                 return true;
             }
@@ -128,13 +151,13 @@
         return ret;
     };
     
-    $.ready = function(callback) {
+    _.ready = function(callback) {
         window.addEventListener("DOMContentLoaded", callback, false);
     };
     
-    $.random = function(min, max=null) {
-        if ($.isArray(min)) {
-            let rand = 0 + Math.floor(Math.random() * (min.length - 0 + 1));
+    _.random = function(min, max=null) {
+        if (_.isArray(min)) {
+            let rand = 0 + Math.floor(Math.random() * (min.length));
             return min[rand];
         }
         if (max == null) {
@@ -144,10 +167,34 @@
         return min + Math.floor(Math.random() * (max - min + 1));
     };
     
+    _.range = function(min, max=null) {
+        const rng = [];
+        
+        if (_.isString(min)) {
+            min = min.charCodeAt(0);
+            max = max.charCodeAt(0);
+            
+            for (let i = min; i <= max; i++) {
+                rng.push(String.fromCharCode(i));
+            }
+            return rng;
+        }
+        
+        if (max == null) {
+            max = min;
+            min = 0;
+        }
+        
+        for (let i = min; i <= max; i++) {
+            rng.push(i);
+        }
+        return rng;
+    };
     
-    $.map = function(collec, callback, context) {
+    
+    _.map = function(collec, callback, context) {
         let newCollec = Object.assign({}, collec);
-        let keys = $.keys(collec);
+        let keys = _.keys(collec);
         
         if (context !== null || context !== undefined) {
             for (let i = 0; i < keys.length; i++) {
@@ -161,8 +208,8 @@
         return newCollec;
     };
     
-    $.reduce = $.foldl = function(collec, callback, context) {
-        let keys = $.keys(collec);
+    _.reduce = _.foldl = function(collec, callback, context) {
+        let keys = _.keys(collec);
         let startValue = collec[keys[0]];
         for (let i = 1; i < keys.length; i++) {
             startValue = callback(startValue, collec[keys[i]], collec);
@@ -170,8 +217,8 @@
         return startValue;
     };
     
-    $.reduceRight = $.foldr = function(collec, callback, context) {
-        let keys = $.keys(collec);
+    _.reduceRight = _.foldr = function(collec, callback, context) {
+        let keys = _.keys(collec);
         let startValue = collec[keys[keys.length - 1]];
         for (let i = keys.length - 2; i >= 0; i--) {
             startValue = callback(startValue, collec[keys[i]], collec);
@@ -179,9 +226,9 @@
         return startValue;
     };
     
-    $.find = function(collec, callback) {
+    _.find = function(collec, callback) {
         let retValue = null;
-        $.each(collec, function(key) {
+        _.each(collec, function(key) {
             let ret = callback(key, this, collec);
             if (ret) {
                 retValue = this;
@@ -191,9 +238,9 @@
         return retValue;
     };
     
-    $.filter = function(arr, callback) {
+    _.filter = function(arr, callback) {
         let newArr = [];
-        $.each(arr, function(key) {
+        _.each(arr, function(key) {
             let ret = callback(key, this, arr);
             if (ret) {
                 newArr.push(this);
@@ -203,10 +250,10 @@
     };
     
     
-    $.where = function(arr, obj) {
+    _.where = function(arr, obj) {
         let newArr = [];
-        let keys = $.keys(obj);
-        $.each(arr, function(key) {
+        let keys = _.keys(obj);
+        _.each(arr, function(key) {
             let canIAdd = true;
             for (let i = 0; i < keys.length; i++) {
                 if (this[keys[i]] !== obj[keys[i]]) {
@@ -222,9 +269,9 @@
         return newArr;
     };
     
-    $.reject = function(arr, callback) {
+    _.reject = function(arr, callback) {
         let newArr = [];
-        $.each(arr, function(key) {
+        _.each(arr, function(key) {
             let ret = callback(key, this, arr);
             if (!ret) {
                 newArr.push(this);
@@ -233,7 +280,7 @@
         return newArr;
     };
     
-    $.all = $.every = function(arr, callback) {
+    _.all = _.every = function(arr, callback) {
         let isAllOk = true;
         loop(arr, function(i) {
             let ret = callback(i, this, arr);
@@ -245,7 +292,7 @@
         return isAllOk;
     };
     
-    $.any = $.some = function(arr, callback) {
+    _.any = _.some = function(arr, callback) {
         let isAllOk = false;
         loop(arr, function(i) {
             let ret = callback(i, this, arr);
@@ -257,10 +304,10 @@
         return isAllOk;
     };
     
-    $.invoke = function() {
+    _.invoke = function() {
         let args = arguments;
         let arr = args[0];
-        $.each(arr, function(index) {
+        _.each(arr, function(index) {
             for (let i = 1; i < args.length; i++) {
                 arr[index] = this[args[i]]();
             }
@@ -268,7 +315,7 @@
         return arr;
     };
     
-    $.extend = function() {
+    _.extend = function() {
         let newArr = [];
         for (let i = 0; i < arguments.length; i++) {
             newArr = newArr.concat(arguments[i])
@@ -276,16 +323,16 @@
         return newArr;
     };
     
-    $.clone = function(collec) {
-        return $.isArray(collec) ? [].concat(collec) : Object.assign({}, collec);
+    _.clone = function(collec) {
+        return _.isArray(collec) ? [].concat(collec) : Object.assign({}, collec);
     };
     
-    $.has = function(collec, key) {
-        return $.isContains($.keys(collec), key);
+    _.has = function(collec, key) {
+        return _.isContains(_.keys(collec), key);
     };
     
-    $.each = $.forEach = function(o, callback, context) {
-        if ($.isArray(o)) {
+    _.each = _.forEach = function(o, callback, context) {
+        if (_.isArray(o)) {
             for (let i = 0; i < o.length; i++) {
                 let ret = false;
                 if (context === undefined || context === null) {
@@ -296,8 +343,8 @@
                 
                 if (ret === true) break;
             }
-        }else if ($.isIterable(o)) {
-            let keys = $.keys(o);
+        }else if (_.isIterable(o)) {
+            let keys = _.keys(o);
             for (let i = 0; i < keys.length; i++) {
                 let ret = false;
                 if (context === undefined || context === null) {
@@ -317,7 +364,7 @@
         let arr;
         let itWasString = false;
         
-        if ($.isString(o)) {
+        if (_.isString(o)) {
             itWasString = true;
             arr = o.split("");
         } else {
@@ -329,17 +376,17 @@
         return itWasString ? arr.join("") : arr;
     }
     
-    $.dropLast = function(o, num=1) {
+    _.dropLast = function(o, num=1) {
         return drop(o, num, true);
     };
     
-    $.dropFirst = function(o, num=1) {
+    _.dropFirst = function(o, num=1) {
         return drop(o, num, false);
     };
     
     // TODO: implement, http and fetch method
     
-    $.http = function(url, args) {
+    _.http = function(url, args) {
         let xhr;
         if (window.XMLHttpRequest) {
             // code for modern browsers
@@ -352,11 +399,11 @@
         xhr.onreadystatechange = function() {
             if (this.readyState == 4) {
                 if (this.statusText == "OK") {
-                    if ($.has(args, "onSuccess")) {
+                    if (_.has(args, "onSuccess")) {
                         args.onSuccess.call(this, this.responseText);
                     }
                 } else {
-                    if ($.has(args, "onFail")) {
+                    if (_.has(args, "onFail")) {
                         args.onFail.call(this, this.responseText);
                     }
                 }
@@ -364,17 +411,17 @@
         };
         
         let data = "";
-        if ($.has(args, "data")) {
+        if (_.has(args, "data")) {
             data += "?";
             loop(args.data, function(key) {
                 data += (key + "=" + this + "&")
             });
             
-            data = $.dropLast(data, 1);
+            data = _.dropLast(data, 1);
         }
         
         let isPost = false;
-        if ($.has(args, "method")) {
+        if (_.has(args, "method")) {
             if (args.method.toLowerCase() === "get") {
                 xhr.open("GET", url + data, true);
             } else {
@@ -386,43 +433,43 @@
             xhr.open("GET", url + data, true);
         }
         
-        if ($.has(args, "headers")) {
+        if (_.has(args, "headers")) {
             loop(args.headers, function(key) {
                 xhr.setRequestHeader(key, this);
             });
         }
         
         if (isPost) {
-            data = $.dropFirst(data, 1);
+            data = _.dropFirst(data, 1);
             xhr.send(data);
         } else {
             xhr.send();
         }
     };
     
-    $.upload = function() {
-        console.warn("$.upload() not implemented yet!");
+    _.upload = function() {
+        console.warn("_.upload() not implemented yet!");
     };
     
     
-    $.eventStack = [];
-    $.doms = [];
+    _.eventStack = [];
+    _.doms = [];
     
-    $.extension = function(name, callback) {
-        if ($.has($, name)) {
+    _.extension = function(name, callback) {
+        if (_.has(_, name)) {
             throw "The extension name '" + name + "' already exist."
         }
-        $[name] = callback;
+        _[name] = callback;
     };
     
     
-    $.attrs = function(el) {
+    _.attrs = function(el) {
         return Array.from(el.attributes);
     };
     
     function getAttrs(el) {
         let attrs = {};
-        loop($.attrs(el), function() {
+        loop(_.attrs(el), function() {
             attrs[this] = el.getAttribute(this);
         });
         return attrs;
@@ -467,13 +514,13 @@
                 let oldVDOM = {tag: oldChilds[oldNodeCount].tagName.toLowerCase(), attrs: getAttrs(oldChilds[oldNodeCount]), children: oldChilds[oldNodeCount].children};
                 let newVDOM = {tag: newChilds[newNodeCount].tagName.toLowerCase(), attrs: getAttrs(newChilds[newNodeCount]), children: newChilds[newNodeCount].children};
                 
-                if (newVDOM.tag !== oldVDOM.tag || $.keys(newVDOM.attrs).length !== $.keys(oldVDOM.attrs).length || 
+                if (newVDOM.tag !== oldVDOM.tag || _.keys(newVDOM.attrs).length !== _.keys(oldVDOM.attrs).length || 
                 newVDOM.children.length !== oldVDOM.children.length || newChilds[newNodeCount].textContent !== oldChilds[oldNodeCount].textContent) {
                     callback(newChilds[newNodeCount], oldChilds[oldNodeCount], "replace");
                     isUpdated = true;
                 } else {
                     loop(oldVDOM.attrs, function(key) {
-                        if (!$.has(newVDOM.attrs, key) || newVDOM[key] !== oldVDOM[key]) {
+                        if (!_.has(newVDOM.attrs, key) || newVDOM[key] !== oldVDOM[key]) {
                             callback(newChilds[newNodeCount], oldChilds[oldNodeCount], "replace");
                             isUpdated = true;
                             return true;
@@ -491,31 +538,31 @@
         }
     }
     
-    // $.virtualDOM = function(node) {
-    //     if ($.isString(node)) {
+    // _.virtualDOM = function(node) {
+    //     if (_.isString(node)) {
     //         node = document.querySelector(node);
-    //     } else if ($.isIterable(node)) {
+    //     } else if (_.isIterable(node)) {
     //         node = node[0];
     //     }
-    //     let attrs = $.attrs(node);
+    //     let attrs = _.attrs(node);
     //     let dom = {tag: node.tagName.toLowerCase(), attrs: getAttrs(node), children: createVirtualDOM(node.children, [])}
         
-    //     $.doms.push({
+    //     _.doms.push({
     //         node: node,
     //         dom: dom
     //     })
     // };
     
-    $.render = function(oldNode, newNode) {
-        if ($.isString(newNode)) {
+    _.render = function(oldNode, newNode) {
+        if (_.isString(newNode)) {
             let tmp = document.createElement("div");
             tmp.innerHTML = newNode;
             newNode = tmp.children[0];
         }
         
-        if ($.isString(oldNode)) {
+        if (_.isString(oldNode)) {
             oldNode = document.querySelector(oldNode);
-        } else if ($.isIterable(oldNode)) {
+        } else if (_.isIterable(oldNode)) {
             oldNode = oldNode[0];
         }
         
@@ -580,29 +627,29 @@
         constructor(sel) {
             let self = this;
             if (sel === undefined || sel === null) {
-            } else if ($.isString(sel)) {
+            } else if (_.isString(sel)) {
                 if (/<[a-z][\s\S]*>/i.test(sel)) {
-                    let el = doc.createElement("div");
+                    let el = document.createElement("div");
                     el.innerHTML = sel;
                     
                     loop(el.children, function() {
                         self.push(this);
                     });
                 } else {
-                    loop(doc.querySelectorAll(sel), function() {
-                        if (!$.isContains(self, this)) {
+                    loop(document.querySelectorAll(sel), function() {
+                        if (!_.isContains(self, this)) {
                             self.push(this);
                         }
                     });
                 }
                 
-            } else if ($.isElement(sel)) {
-                if (!$.isContains(self, sel)) {
+            } else if (_.isElement(sel)) {
+                if (!_.isContains(self, sel)) {
                     self.push(sel);
                 }
-            } else if ($.isIterable(sel)) {
+            } else if (_.isIterable(sel)) {
                 loop(sel, function() {
-                    if ($.isElement(this) && !$.isContains(self, this)) self.push(this);
+                    if (_.isElement(this) && !_.isContains(self, this)) self.push(this);
                 });
             }
         }
@@ -612,15 +659,15 @@
             for (let i = 0; i < arguments.length; i++) {
                 let sel = arguments[i];
                 
-                if ($.isElement(sel)) {
-                    if (!$.isContains(this, sel)) this.push(sel);
+                if (_.isElement(sel)) {
+                    if (!_.isContains(this, sel)) this.push(sel);
                 } else if (typeof sel === "string") {
-                    loop(doc.querySelectorAll(sel), function() {
-                        if (!$.isContains(self, this)) self.push(this);
+                    loop(document.querySelectorAll(sel), function() {
+                        if (!_.isContains(self, this)) self.push(this);
                     });
                 } else {
                     loop(sel, function() {
-                        if (!$.isContains(self, this)) self.push(this);
+                        if (!_.isContains(self, this)) self.push(this);
                     });
                 }
             }
@@ -649,17 +696,17 @@
         }
         
         also(callback) {
-            callback.call($(this[0]));
+            callback.call(_(this[0]));
         }
         
         each(callback, context) {
             if (context === undefined || context === null) {
                 for (let i = 0; i < this.length; i++) {
-                    callback.call($(this[i]), i, this);
+                    callback.call(_(this[i]), i, this);
                 }
             } else {
                 for (let i = 0; i < this.length; i++) {
-                    callback.call(context, i, $(this[i]), this);
+                    callback.call(context, i, _(this[i]), this);
                 }
             }
             return this;
@@ -683,20 +730,20 @@
         append() {
             for (let k = 0; k < arguments.length; k++) {
                 let sel = arguments[k];
-                if ($.isString(sel)) {
-                    let elements = $(sel);
+                if (_.isString(sel)) {
+                    let elements = _(sel);
                     for (let i = 0; i < elements.length; i++) {
                         for (let j = 0; j < this.length; j++) {
                             this[j].appendChild(elements[i]);
                         }
                     }
-                } else if ($.isElement(sel)) {
+                } else if (_.isElement(sel)) {
                     for (let i = 0; i < this.length; i++) {
                         this[i].appendChild(sel);
                     }
-                } else if ($.isIterable(sel) || $.isArray(sel)) {
+                } else if (_.isIterable(sel) || _.isArray(sel)) {
                     for (let i = 0; i < sel.length; i++) {
-                        if ($.isElement(sel[i])) {
+                        if (_.isElement(sel[i])) {
                             for (let j = 0; j < this.length; j++) {
                                 this[j].appendChild(sel[i]);
                             }
@@ -712,21 +759,21 @@
             let self = this;
             for (let k = 0; k < arguments.length; k++) {
                 let sel = arguments[k];
-                if ($.isString(sel)) {
-                    loop($(sel), function() {
+                if (_.isString(sel)) {
+                    loop(_(sel), function() {
                         let el = this;
                         loop(self, function() {
                             this.insertBefore(el, this.childNodes[0]);
                         });
                     });
-                } else if ($.isElement(sel)) {
+                } else if (_.isElement(sel)) {
                     loop(this, function() {
                         this.insertBefore(sel, this.childNodes[0]);
                     });
-                } else if ($.isIterable(sel)) {
+                } else if (_.isIterable(sel)) {
                     loop(sel, function() {
                         let el = this;
-                        if ($.isElement(el)) {
+                        if (_.isElement(el)) {
                             loop(self, function() {
                                 this.insertBefore(el, this.childNodes[0]);
                             });
@@ -739,7 +786,7 @@
         
         render(s) {
             loop(this, function() {
-                $.render(this, s);
+                _.render(this, s);
             });
             return this;
         }
@@ -757,7 +804,7 @@
             if (s === undefined || s === null) return this[0].textContent;
             
             for (let i = 0; i < this.length; i++) {
-                this[i].innerHTML = $.escape(s);   
+                this[i].innerHTML = _.escape(s);   
             }
             
             return this;
@@ -785,7 +832,7 @@
         bind(event, callback) {
             let events = event.split(" ");
             loop(this, function() {
-                $.eventStack.push({
+                _.eventStack.push({
                     "element": this,
                     "callback": callback,
                     "event": event
@@ -793,7 +840,7 @@
                 
                 for (let j = 0; j < events.length; j++) {
                     this.addEventListener(events[j].trim(), function() {
-                        callback.call($(this));
+                        callback.call(_(this));
                     }, false);
                 }
             });
@@ -807,8 +854,8 @@
             loop(this, function() {
                 let el = this;
                 for (let j = 0; j < events.length; j++) {
-                    loop($.eventStack, function(i) {
-                        if ($.isSame(el, this["element"]) && events[j] === this["event"]) {
+                    loop(_.eventStack, function(i) {
+                        if (_.isSame(el, this["element"]) && events[j] === this["event"]) {
                             el.removeEventListener(events[j], this["callback"]);
                             toRemoveEvent.push(i);
                         }
@@ -817,7 +864,7 @@
             });
             
             loop(toRemoveEvent, function() {
-                $.eventStack.splice(this, 1);
+                _.eventStack.splice(this, 1);
             });
             
             return this;
@@ -836,8 +883,8 @@
             let toRemoveEvent = [];
             loop(this, function() {
                 let el = this;
-                loop($.eventStack, function(i) {
-                    if ($.isSame(el, this["element"])) {
+                loop(_.eventStack, function(i) {
+                    if (_.isSame(el, this["element"])) {
                         el.removeEventListener(event, this["callback"]);
                         toRemoveEvent.push(i);
                     }
@@ -845,7 +892,7 @@
             });
             
             loop(toRemoveEvent, function() {
-                $.eventStack.splice(this, 1);
+                _.eventStack.splice(this, 1);
             });
             return this;
         }
@@ -879,7 +926,7 @@
         css(style, val) {
             let self = this;
             if (val === null || val === undefined) {
-                loop($.keys(style), function() {
+                loop(_.keys(style), function() {
                     let key = this;
                     let value = style[key];
                     loop(self, function() {
@@ -898,24 +945,24 @@
             let sibs = [];
             let currentElement = this[0];
             loop(currentElement.parentNode.children, function() {
-                if (!$.isSame(this, currentElement)) {
+                if (!_.isSame(this, currentElement)) {
                     sibs.push(this);
                 }
             });
             
-            return $(sibs);
+            return _(sibs);
         }
         
         first() {
-            return $(this[0]);
+            return _(this[0]);
         }
         
         last() {
-            return $(this[this.length - 1]);
+            return _(this[this.length - 1]);
         }
         
         filter(sel) {
-            let container = doc.createElement("div");
+            let container = document.createElement("div");
             let newElements = [];
             
             loop(this, function() {
@@ -927,17 +974,17 @@
                 }
             });
             
-            return $(newElements);
+            return _(newElements);
         }
         
         height(val) {
-            if (val === undefined || val === null || !$.isNumber(val)) return this[0].offsetHeight;
+            if (val === undefined || val === null || !_.isNumber(val)) return this[0].offsetHeight;
             this.css("height", val + "px");
             return this;
         }
         
         width(val) {
-            if (val === undefined || val === null || !$.isNumber(val)) return this[0].offsetWidth;
+            if (val === undefined || val === null || !_.isNumber(val)) return this[0].offsetWidth;
             this.css("width", val + "px");
             return this;
         }
@@ -983,11 +1030,11 @@
         parents() {
             let ps = [];
             loop(this, function() {
-                if (!$.isContains(ps, this.parentNode)) {
+                if (!_.isContains(ps, this.parentNode)) {
                     ps.push(this.parentNode);
                 }
             });
-            return $(ps);
+            return _(ps);
         }
         
         removeAttr(key) {
@@ -1014,13 +1061,11 @@
     DOMLang.prototype.pop = Array.prototype.pop;
     DOMLang.prototype.splice = Array.prototype.splice;
     DOMLang.prototype.get = function(index) {
-        return $(this[index]);
+        return _(this[index]);
     };
     
-    $.plugin = function(name, callback) {
+    _.plugin = function(name, callback) {
         DOMLang.prototype[name] = callback;
     };
     
-    root["$"] = $;
-    
-})(window, document);
+})();

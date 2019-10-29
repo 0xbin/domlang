@@ -36,7 +36,7 @@ Or use CDN link
 
 DOM methods makes DOM manipulation much easier.
 
-- [$(selector)](#dom-method-$)
+- [_(selector)](#dom-method-_)
 - [.addClass(className)](#dom-method-addClass)
 - [.append(\[arugments\])](#dom-method-append)
 - [.also(callback)](#dom-method-also)
@@ -82,52 +82,52 @@ DOM methods makes DOM manipulation much easier.
 
 Extension methods will helps to work with large collections and string.
 
-- [$.any(arr, callback)](#extension-method-any) or [$.some(arr, callback)](#extension-method-any)
-- [$.all(array, callback)](#extension-method-all) or [$.every(arr, callback)](#extension-method-all)
-- [$.attrs(element)](#extension-method-attrs)
-- [$.clone(collection)](#extension-method-clone)
-- [$.dropLast(s, \[num=1\])](#extension-method-dropLast)
-- [$.dropFirst(s, \[num=1\])](#extension-method-dropFirst)
-- [$.escape(s)](#extension-method-escape)
-- [$.extend(\[arguments\])](#extension-method-extend)
-- [$.extension(name, callback)](#extension-method-extension)
-- [$.each(collection, callback, \[context\])](#extension-method-each) or [$.forEach(collection, callback, \[context\])](#extension-method-each)
-- [$.find(collection, callback)](#extension-method-find)
-- [$.filter(arr, callback)](#extension-method-filter)
-- [$.has(collection, key)](#extension-method-has)
-- [$.http(url, args)](#extension-method-http)
-- [$.isArray(obj)](#extension-method-isArray)
-- [$.isElement(obj)](#extension-method-isElement)
-- [$.isString(obj)](#extension-method-isString)
-- [$.isNumber(obj)](#extension-method-isNumber) or [$.isNum(obj)](#extension-method-isNumber)
-- [$.isEmpty(collection)](#extension-method-isEmpty)
-- [$.isEqual(obj1, obj2)](#extension-method-isEqual)
-- [$.isFunction(obj)](#extension-method-isFunction)
-- [$.isLoopable(obj)](#extension-method-isLoopable) or [$.isIterable(obj)](#extension-method-isLoopable)
-- [$.isSame(obj1, obj2)](#extension-method-isSame)
-- [$.isContains(arr, obj)](#extension-method-isContains)
-- [$.invoke(\[arguments\])](#extension-method-invoke)
-- [$.keys(obj)](#extension-method-keys)
-- [$.map(collection, callback, \[context\])](#extension-method-map)
-- [$.plugin(name, callback)](#extension-method-plugin)
-- [$.ready(callback)](#extension-method-ready)
-- [$.random(min, \[max=null\])](#extension-method-random)
-- [$.reduce(collection, callback, \[context\])](#extension-method-reduce) or [$.foldl(collection, callback, \[context\])](#extension-method-reduce)
-- [$.reduceRight(collection, callback, \[context\])](#extension-method-reduceRight) or [$.foldr(collection, callback, \[context\])](#extension-method-reduceRight)
-- [$.reject(arr, callback)](#extension-method-reject)
-- [$.render(element, html)](#extension-method-render)
-- [$.toObject(jsonString)](#extension-method-toObject)
-- [$.toJson(collection)](#extension-method-toJson)
-- [$.toNum(s)](#extension-method-toNum) or [$.toNumber(s)](#extension-method-toNum)
-- [$.toString(obj)](#extension-method-toString)
-- [$.toArray(collection)](#extension-method-toArray)
-- [$.unescape(s)](#extension-method-unescape)
-- [$.upload(url)](#extension-method-values) :warning:
-- [$.values(obj)](#extension-method-values)
-- [$.where(arr, obj)](#extension-method-where)
+- [_.any(arr, callback)](#extension-method-any) or [_.some(arr, callback)](#extension-method-any)
+- [_.all(array, callback)](#extension-method-all) or [_.every(arr, callback)](#extension-method-all)
+- [_.attrs(element)](#extension-method-attrs)
+- [_.clone(collection)](#extension-method-clone)
+- [_.dropLast(s, \[num=1\])](#extension-method-dropLast)
+- [_.dropFirst(s, \[num=1\])](#extension-method-dropFirst)
+- [_.escape(s)](#extension-method-escape)
+- [_.extend(\[arguments\])](#extension-method-extend)
+- [_.extension(name, callback)](#extension-method-extension)
+- [_.each(collection, callback, \[context\])](#extension-method-each) or [_.forEach(collection, callback, \[context\])](#extension-method-each)
+- [_.find(collection, callback)](#extension-method-find)
+- [_.filter(arr, callback)](#extension-method-filter)
+- [_.has(collection, key)](#extension-method-has)
+- [_.http(url, args)](#extension-method-http)
+- [_.isArray(obj)](#extension-method-isArray)
+- [_.isElement(obj)](#extension-method-isElement)
+- [_.isString(obj)](#extension-method-isString)
+- [_.isNumber(obj)](#extension-method-isNumber) or [_.isNum(obj)](#extension-method-isNumber)
+- [_.isEmpty(collection)](#extension-method-isEmpty)
+- [_.isEqual(obj1, obj2)](#extension-method-isEqual)
+- [_.isFunction(obj)](#extension-method-isFunction)
+- [_.isLoopable(obj)](#extension-method-isLoopable) or [_.isIterable(obj)](#extension-method-isLoopable)
+- [_.isSame(obj1, obj2)](#extension-method-isSame)
+- [_.isContains(arr, obj)](#extension-method-isContains)
+- [_.invoke(\[arguments\])](#extension-method-invoke)
+- [_.keys(obj)](#extension-method-keys)
+- [_.map(collection, callback, \[context\])](#extension-method-map)
+- [_.plugin(name, callback)](#extension-method-plugin)
+- [_.ready(callback)](#extension-method-ready)
+- [_.random(min, \[max=null\])](#extension-method-random)
+- [_.reduce(collection, callback, \[context\])](#extension-method-reduce) or [_.foldl(collection, callback, \[context\])](#extension-method-reduce)
+- [_.reduceRight(collection, callback, \[context\])](#extension-method-reduceRight) or [_.foldr(collection, callback, \[context\])](#extension-method-reduceRight)
+- [_.reject(arr, callback)](#extension-method-reject)
+- [_.render(element, html)](#extension-method-render)
+- [_.toObject(jsonString)](#extension-method-toObject)
+- [_.toJson(collection)](#extension-method-toJson)
+- [_.toNum(s)](#extension-method-toNum) or [_.toNumber(s)](#extension-method-toNum)
+- [_.toString(obj)](#extension-method-toString)
+- [_.toArray(collection)](#extension-method-toArray)
+- [_.unescape(s)](#extension-method-unescape)
+- [_.upload(url)](#extension-method-values) :warning:
+- [_.values(obj)](#extension-method-values)
+- [_.where(arr, obj)](#extension-method-where)
 
 
-<h3 id="dom-method-$">$(selector)</h3>
+<h3 id="dom-method-_">_(selector)</h3>
 
 Allows you to create a new `domlang` instance, you can pass the following as argument.
 
@@ -138,7 +138,7 @@ Allows you to create a new `domlang` instance, you can pass the following as arg
 **Example →**
 
 ```js
-let buttons = $("button"); 
+let buttons = _("button"); 
 ```
 
 <h3 id="dom-method-addClass">.addClass(className)</h3>
@@ -148,8 +148,8 @@ Add class name to all selected elements. You can add multiple class names by sep
 **Example →**
 
 ```js
-$("a").addClass("link");
-$("ul").addClass("list navigation");
+_("a").addClass("link");
+_("ul").addClass("list navigation");
 ```
 
 
@@ -160,13 +160,13 @@ Append HTML element(s) to the selected elements. You can pass the following as a
 - `String`      — Select element(s) from the DOM and append them to the selected elements.
 - `HTMLElement` — Append given HTMLElement to the selected elements.
 - `Array`       — Append all the elements from given array to the selected elements if the array element is a HTML element.
-- `arguments`   — You can pass all above parameters as arguments. Example : `$("#container").append(element1, element2)`
+- `arguments`   — You can pass all above parameters as arguments. Example : `_("#container").append(element1, element2)`
 
 **Example →**
 
 ```js
-let span = $("<span>+</span>");
-$("ul li").append(span);
+let span = _("<span>+</span>");
+_("ul li").append(span);
 ```
 
 <h3 id="dom-method-append">.also(callback)</h3>
@@ -176,7 +176,7 @@ This is method is an utility method. The first selected element will be set to t
 **Example →**
 
 ```js
-$("input[type='username']").also(function() {
+_("input[type='username']").also(function() {
   if (this.isDisabled()) {
     this.enable();
   }
@@ -190,9 +190,9 @@ Get or set HTML element(s) attribute. :warning: If key only passed as argument, 
 **Example →**
 
 ```js
-$("a").attr("href", "not-found.html");
+_("a").attr("href", "not-found.html");
 
-let action = $("form").attr("action");
+let action = _("form").attr("action");
 ```
 
 
@@ -203,7 +203,7 @@ Bind an event listener to selected element(s). :information_source: It is a wrap
 **Example →**
 
 ```js
-$("button").bind("click", function() {
+_("button").bind("click", function() {
     alert(this.text());
 });
 ```
@@ -215,7 +215,7 @@ Get all the children of the first element from the selected elements. Pass `true
 **Example →**
 
 ```js
-$("ul").children().each(function(i) {
+_("ul").children().each(function(i) {
   this.text(this.text() + " " + i);
 });
 ```
@@ -227,7 +227,7 @@ Clear all events of selected elements.
 **Example →**
 
 ```js
-let buttons = $("button").bind("click", function() {
+let buttons = _("button").bind("click", function() {
   alert("hello");
 });
 
@@ -241,7 +241,7 @@ Bind a click event to selected elements.
 **Example →**
 
 ```js
-$("button").click(function() {
+_("button").click(function() {
   alert(this.text());
 });
 ```
@@ -257,7 +257,7 @@ Add CSS style to selected elements. You can pass the following as first argument
 **Example →**
 
 ```js
-let anchors = $("a");
+let anchors = _("a");
 anchors.css("color", "green");
 anchors.css({
   textStyle: "none",
@@ -274,7 +274,7 @@ Disable selected form elements.
 **Example →**
 
 ```js
-$("input[type='username']").disable();
+_("input[type='username']").disable();
 ```
 
 
@@ -285,7 +285,7 @@ Enable selected form elements.
 **Example →**
 
 ```js
-$("input[type='username']").enable();
+_("input[type='username']").enable();
 ```
 
 
@@ -296,13 +296,13 @@ Allows you to add more elements to the current instance. You can pass the follow
 - `String`      — Select element(s) from the DOM and append them to the selected elements.
 - `HTMLElement` — Append given HTMLElement to the selected elements.
 - `Array`       — Append all the elements from given array to the selected elements if the array element is a HTML element.
-- `arguments`   — You can pass all above parameters as arguments. Example : `$("#container").extend(element1, element2)`
+- `arguments`   — You can pass all above parameters as arguments. Example : `_("#container").extend(element1, element2)`
 
 
 **Example →**
 
 ```js
-$("ul li").extend("ol li").css("listStyle", "none");
+_("ul li").extend("ol li").css("listStyle", "none");
 ```
 
 
@@ -313,7 +313,7 @@ Loop through each element from the current instance. if there is no context pass
 **Example →**
 
 ```js
-$("input").each(function(index, elements) {
+_("input").each(function(index, elements) {
   if (this.isDisabled()) {
     this.enable();
   }
@@ -322,7 +322,7 @@ $("input").each(function(index, elements) {
 
 ```js
 let navs = ["Home", "About", "Contact"];
-$("a").each(function(element, index, elements) {
+_("a").each(function(element, index, elements) {
   element.text(this);
 }, navs);
 ```
@@ -335,7 +335,7 @@ Remove elements match the given selector from current instance.
 **Example →**
 
 ```js
-let buttons = $("button, input[type='submit']");
+let buttons = _("button, input[type='submit']");
 buttons.disable();
 buttons.filter("button").enable(); // enable input with type submit
 ```
@@ -348,7 +348,7 @@ Returns a new instance with the first element from current instance.
 **Example →**
 
 ```js
-let buttons = $("button");
+let buttons = _("button");
 let firstButton = buttons.first();
 ```
 
@@ -360,7 +360,7 @@ Returns a new instance with the given indexed element from current instance.
 **Example →**
 
 ```js
-let buttons = $("button");
+let buttons = _("button");
 let secondButton = buttons.get(1);
 ```
 
@@ -372,7 +372,7 @@ Hide all selected elements.
 **Example →**
 
 ```js
-$("img").hide();
+_("img").hide();
 ```
 
 
@@ -383,8 +383,8 @@ Return the height of the first element from selected elements. :information_sour
 **Example →**
 
 ```js
-let containerHeight = $("div#container").height();
-$("div#container").height(containerHeight - 20);
+let containerHeight = _("div#container").height();
+_("div#container").height(containerHeight - 20);
 ```
 
 
@@ -395,8 +395,8 @@ If no argument passed then return the `html` of the first element from selected 
 **Example →**
 
 ```js
-let containerHtml = $("div#container").html();
-$("div#container").html("<h1>I am inside a container</h1>");
+let containerHtml = _("div#container").html();
+_("div#container").html("<h1>I am inside a container</h1>");
 ```
 
 
@@ -407,7 +407,7 @@ Check if the first element from selected elements is isDisabled or not.
 **Example →**
 
 ```js
-$("input[type='username']").also(function() {
+_("input[type='username']").also(function() {
   if (this.isDisabled()) {
     this.enable();
   }
@@ -421,7 +421,7 @@ Return the inner height of the first element from selected elements.
 **Example →**
 
 ```js
-let insideHeight = $("div#container").innerHeight();
+let insideHeight = _("div#container").innerHeight();
 ```
 
 
@@ -432,7 +432,7 @@ Return the inner width of the first element from selected elements.
 **Example →**
 
 ```js
-let insideHeight = $("div#container").innerWidth();
+let insideHeight = _("div#container").innerWidth();
 ```
 
 
@@ -443,7 +443,7 @@ Returns a new instance with the last element from current instance.
 **Example →**
 
 ```js
-let buttons = $("button");
+let buttons = _("button");
 let lastButton = buttons.last();
 ```
 
@@ -455,7 +455,7 @@ Return the offset of the first element from selected elements.
 **Example →**
 
 ```js
-let offset = $("button").offset();
+let offset = _("button").offset();
 console.log(offset.top, offset.left);
 ```
 
@@ -467,7 +467,7 @@ Bind an event listener to selected element(s). :information_source: It is a wrap
 **Example →**
 
 ```js
-$("button").on("click", function() {
+_("button").on("click", function() {
     alert(this.text());
 });
 ```
@@ -480,7 +480,7 @@ Return the parent element of the first element from selected elements.
 **Example →**
 
 ```js
-let form = $("input[name='username']").parent();
+let form = _("input[name='username']").parent();
 ```
 
 <h3 id="dom-method-parents">.parents()</h3>
@@ -490,7 +490,7 @@ Return all the parent elements of the selected elements.
 **Example →**
 
 ```js
-let uls = $("li").parents().filter("ol");
+let uls = _("li").parents().filter("ol");
 ```
 
 
@@ -501,13 +501,13 @@ Prepend HTML element(s) to the selected elements. You can pass the following as 
 - `String`      — Select element(s) from the DOM and append them to the selected elements.
 - `HTMLElement` — Append given HTMLElement to the selected elements.
 - `Array`       — Append all the elements from given array to the selected elements if the array element is a HTML element.
-- `arguments`   — You can pass all above parameters as arguments. Example : `$("#container").append(element1, element2)`
+- `arguments`   — You can pass all above parameters as arguments. Example : `_("#container").append(element1, element2)`
 
 **Example →**
 
 ```js
-let span = $("<span>+</span>");
-$("ul li").prepend(span);
+let span = _("<span>+</span>");
+_("ul li").prepend(span);
 ```
 
 
@@ -518,8 +518,8 @@ Remove class name to all selected elements. You can add multiple class names by 
 **Example →**
 
 ```js
-$("a").removeClass("link");
-$("ul").removeClass("list navigation");
+_("a").removeClass("link");
+_("ul").removeClass("list navigation");
 ```
 
 
@@ -539,7 +539,7 @@ $("ul").removeClass("list navigation");
 ```
 
 ```js
-$("#wrap").render(`
+_("#wrap").render(`
   <div id="wrap">
     <h1>Heading 1</h1>
     <p>Para 1</p>
@@ -560,7 +560,7 @@ Remove all selected elements from the DOM.
 **Example →**
 
 ```js
-$("p").remove();
+_("p").remove();
 ```
 
 <h3 id="dom-method-removeAttr">.removeAttr(key)</h3>
@@ -570,7 +570,7 @@ Remove the given attribute from selected elements.
 **Example →**
 
 ```js
-$("input[data-dummy]").removeAttr("data-dummy");
+_("input[data-dummy]").removeAttr("data-dummy");
 ```
 
 <h3 id="dom-method-show">.show()</h3>
@@ -580,7 +580,7 @@ Make the selected elements visible if they were hidden.
 **Example →**
 
 ```js
-let buttons = $("button");
+let buttons = _("button");
 buttons.hide();
 
 setTimeout(function() {
@@ -595,7 +595,7 @@ Return the siblings of the first element from selected elements.
 **Example →**
 
 ```js
-let allListExceptMe = $("ul li").siblings();
+let allListExceptMe = _("ul li").siblings();
 ```
 
 <h3 id="dom-method-toggleClass">.toggleClass(className)</h3>
@@ -605,7 +605,7 @@ Remove if the class name exist or add if the class name is not.
 **Example →**
 
 ```js
-$("a.green, a.red, a.active").toggleClass("active");
+_("a.green, a.red, a.active").toggleClass("active");
 ```
 
 <h3 id="dom-method-text">.text(s)</h3>
@@ -615,7 +615,7 @@ Set text content of the selected elements.
 **Example →**
 
 ```js
-$("a.notfound").text("Not Found");
+_("a.notfound").text("Not Found");
 ```
 
 <h3 id="dom-method-unbind">.unbind(event)</h3>
@@ -625,11 +625,11 @@ Remove an event from selected elements.
 **Example →**
 
 ```js
-$("input[type='submit']").bind("click", function(e) {
+_("input[type='submit']").bind("click", function(e) {
   e.preventDefault();
 });
 
-$("input[type='submit']").unbind("click");
+_("input[type='submit']").unbind("click");
 ```
 
 <h3 id="dom-method-val">.val(value)</h3>
@@ -639,7 +639,7 @@ Set the value of the selected form elements.
 **Example →**
 
 ```js
-$("input").text("The same values");
+_("input").text("The same values");
 ```
 
 
@@ -650,6 +650,6 @@ Return the width of the first element from selected elements. :information_sourc
 **Example →**
 
 ```js
-let containerWidth = $("div#container").width();
-$("div#container").width(containerWidth - 20);
+let containerWidth = _("div#container").width();
+_("div#container").width(containerWidth - 20);
 ```
