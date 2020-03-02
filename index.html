@@ -34,18 +34,26 @@
         </div>
         
         
-        <script type="text/javascript" src=" https://cdnjs.cloudflare.com/ajax/libs/showdown/1.9.0/showdown.min.js"></script>
-        <script type="text/javascript" src="dest/domlang.min.js"></script>
-    
+        <script type="text/javascript" src="src/domlang.js"></script>
         <script type="text/javascript">
             // var converter = new showdown.Converter();
             // $("#editor").on("keyup", function() {
             //     $("#view").render(converter.makeHtml(this.val()))
             // });
             
-            
-            $("#wrap").html("<h1>hello</h1>");
-            
+            _.post("http://httpbin.org/post", {
+                params: {
+                    name: "jeeva"
+                },
+                form: {
+                    age: 25
+                }
+            })
+            .then(xhr => {
+                console.log(xhr.responseText);
+            }).catch(error => {
+                console.error(error);
+            });
         
         </script>
     </body>

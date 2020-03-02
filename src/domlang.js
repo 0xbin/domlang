@@ -357,6 +357,12 @@
             }
         }
     };
+
+    function loop(arr, callback) {
+        for (let i = 0; i < arr.length; i++) {
+            callback.call(arr[i], i);
+        }
+    }
     
     
     
@@ -385,66 +391,100 @@
     };
     
     // TODO: implement, http and fetch method
-    
-    _.http = function(url, args) {
-        let xhr;
-        if (window.XMLHttpRequest) {
-            // code for modern browsers
-            xhr = new XMLHttpRequest();
-        } else {
-            // code for old IE browsers
-            xhr = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        
-        xhr.onreadystatechange = function() {
-            if (this.readyState == 4) {
-                if (this.statusText == "OK") {
-                    if (_.has(args, "onSuccess")) {
-                        args.onSuccess.call(this, this.responseText);
-                    }
-                } else {
-                    if (_.has(args, "onFail")) {
-                        args.onFail.call(this, this.responseText);
+
+    _.fetch = function(url, args={}) {
+        const promise = new Promise((resolve, reject) => {
+            let xhr;
+            if (window.XMLHttpRequest) {
+                // code for modern browsers
+                xhr = new XMLHttpRequest();
+            } else {
+                // code for old IE browsers
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    if (this.statusText == "OK") {
+                        resolve(this);
+                    } else {
+                        reject(this);
                     }
                 }
+            };
+
+            let params = "";
+            if (_.has(args, "params")) {
+                params += "?";
+                _.each(args.params, function(key) {
+                    params += (key + "=" + this + "&")
+                });
+                
+                params = _.dropLast(params, 1);
             }
-        };
-        
-        let data = "";
-        if (_.has(args, "data")) {
-            data += "?";
-            loop(args.data, function(key) {
-                data += (key + "=" + this + "&")
-            });
-            
-            data = _.dropLast(data, 1);
-        }
-        
-        let isPost = false;
-        if (_.has(args, "method")) {
-            if (args.method.toLowerCase() === "get") {
-                xhr.open("GET", url + data, true);
-            } else {
-                xhr.open("POST", url, true)
-                xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-                isPost = true;
+            xhr.open("GET", url + params, true);
+            if (_.has(args, "headers")) {
+                _.each(args.headers, function(key) {
+                    xhr.setRequestHeader(key, this);
+                });
             }
-        } else {
-            xhr.open("GET", url + data, true);
-        }
-        
-        if (_.has(args, "headers")) {
-            loop(args.headers, function(key) {
-                xhr.setRequestHeader(key, this);
-            });
-        }
-        
-        if (isPost) {
-            data = _.dropFirst(data, 1);
-            xhr.send(data);
-        } else {
             xhr.send();
-        }
+        });
+        return promise;
+    }
+    
+    _.post = function(url, args={}) {
+        const promise = new Promise((resolve, reject) => {
+            let xhr;
+            if (window.XMLHttpRequest) {
+                // code for modern browsers
+                xhr = new XMLHttpRequest();
+            } else {
+                // code for old IE browsers
+                xhr = new ActiveXObject("Microsoft.XMLHTTP");
+            }
+            
+            xhr.onreadystatechange = function() {
+                if (this.readyState == 4) {
+                    if (this.statusText == "OK") {
+                        resolve(this);
+                    } else {
+                        reject(this);
+                    }
+                }
+            };
+            
+            let params = "";
+            if (_.has(args, "params")) {
+                params += "?";
+                _.each(args.params, function(key) {
+                    params += (key + "=" + this + "&")
+                });
+                
+                params = _.dropLast(params, 1);
+            }
+            let form = "";
+            if (_.has(args, "form")) {
+                form += "?";
+                _.each(args.form, function(key) {
+                    form += (key + "=" + this + "&")
+                });
+                
+                form = _.dropLast(form, 1);
+            }
+            
+            xhr.open("POST", url + params, true)
+            xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
+            
+            if (_.has(args, "headers")) {
+                _.each(args.headers, function(key) {
+                    xhr.setRequestHeader(key, this);
+                });
+            }
+            form = _.dropFirst(form, 1);
+            xhr.send(form);
+        });
+        return promise;
     };
     
     _.upload = function() {
@@ -473,151 +513,6 @@
             attrs[this] = el.getAttribute(this);
         });
         return attrs;
-    }
-    
-    // function createVirtualDOM(domChildren, virtualChildren) {
-    //     for (let i = 0; i < domChildren.length; i++) {
-    //         let el = domChildren[i];
-    //         let dom = {
-    //             tag: el.tagName.toLowerCase(),
-    //             attrs: getAttrs(el),
-    //             children: []
-    //         };
-    //         virtualChildren.push(dom);
-            
-    //         if (el.children.length > 0) {
-    //             createVirtualDOM(el.children, virtualChildren[i].children);
-    //         }
-    //     }
-        
-    //     return virtualChildren;
-    // };
-    
-    
-    function compareDOM(oldChilds, newChilds, callback) {
-        let childs = newChilds;
-        if (oldChilds.length > newChilds.length) {
-            childs = oldChilds;
-        }
-        let oldNodeCount = 0;
-        let newNodeCount = 0;
-        for (let i = 0; i < childs.length; i++) {
-            let isUpdated = false;
-            let keepTheNeedle = false;
-            
-            if (newChilds[newNodeCount] === undefined) {
-                callback(null, oldChilds[oldNodeCount], "remove");
-            } else if (oldChilds[oldNodeCount] === undefined) {
-                callback(newChilds[newNodeCount], oldChilds[oldChilds.length - 1], "add")
-                keepTheNeedle = true;
-            } else {
-                let oldVDOM = {tag: oldChilds[oldNodeCount].tagName.toLowerCase(), attrs: getAttrs(oldChilds[oldNodeCount]), children: oldChilds[oldNodeCount].children};
-                let newVDOM = {tag: newChilds[newNodeCount].tagName.toLowerCase(), attrs: getAttrs(newChilds[newNodeCount]), children: newChilds[newNodeCount].children};
-                
-                if (newVDOM.tag !== oldVDOM.tag || _.keys(newVDOM.attrs).length !== _.keys(oldVDOM.attrs).length || 
-                newVDOM.children.length !== oldVDOM.children.length || newChilds[newNodeCount].textContent !== oldChilds[oldNodeCount].textContent) {
-                    callback(newChilds[newNodeCount], oldChilds[oldNodeCount], "replace");
-                    isUpdated = true;
-                } else {
-                    loop(oldVDOM.attrs, function(key) {
-                        if (!_.has(newVDOM.attrs, key) || newVDOM[key] !== oldVDOM[key]) {
-                            callback(newChilds[newNodeCount], oldChilds[oldNodeCount], "replace");
-                            isUpdated = true;
-                            return true;
-                        }
-                    });
-                }
-            }
-        
-            if (newChilds[newNodeCount] !== undefined && oldChilds[oldNodeCount] !== undefined && newChilds[newNodeCount].children.length > 0 && !isUpdated) {
-                compareDOM(newChilds[newNodeCount].children, oldChilds[oldNodeCount].children, callback);
-            }
-            
-            newNodeCount++;
-            if (!keepTheNeedle) oldNodeCount++;
-        }
-    }
-    
-    // _.virtualDOM = function(node) {
-    //     if (_.isString(node)) {
-    //         node = document.querySelector(node);
-    //     } else if (_.isIterable(node)) {
-    //         node = node[0];
-    //     }
-    //     let attrs = _.attrs(node);
-    //     let dom = {tag: node.tagName.toLowerCase(), attrs: getAttrs(node), children: createVirtualDOM(node.children, [])}
-        
-    //     _.doms.push({
-    //         node: node,
-    //         dom: dom
-    //     })
-    // };
-    
-    _.render = function(oldNode, newNode) {
-        if (_.isString(newNode)) {
-            let tmp = document.createElement("div");
-            tmp.innerHTML = newNode;
-            newNode = tmp.children[0];
-        }
-        
-        if (_.isString(oldNode)) {
-            oldNode = document.querySelector(oldNode);
-        } else if (_.isIterable(oldNode)) {
-            oldNode = oldNode[0];
-        }
-        
-        let pendingNodes = [];
-        compareDOM(oldNode.children, newNode.children, function(newNodeRef, oldNodeRef, tag) {
-            if (tag === "replace") {
-                pendingNodes.push({
-                    "task": "add",
-                    "newNode": newNodeRef,
-                    "oldNode": oldNodeRef
-                });
-                pendingNodes.push({
-                    "task": "remove",
-                    "node": oldNodeRef
-                });
-            } else if (tag === "add") {
-                pendingNodes.push({
-                    "task": "new",
-                    "newNode": newNodeRef,
-                    "oldNode": oldNodeRef
-                });
-            } else if (tag === "remove") {
-                pendingNodes.push({
-                    "task": "remove",
-                    "node": oldNodeRef
-                });
-            }
-        });
-        
-        for (let i = 0; i < pendingNodes.length; i++) {
-            let pending = pendingNodes[i];
-            if (pending.task === "add") {
-                pending.oldNode.parentNode.insertBefore(pending.newNode, pending.oldNode);
-            } else if (pending.task === "new") {
-                if (pending.oldNode === undefined) {
-                    oldNode.appendChild(pending.newNode);
-                } else {
-                    pending.oldNode.parentNode.insertBefore(pending.newNode, pending.oldNode.siblings);
-                }
-            }
-        }
-        
-        for (let i = 0; i < pendingNodes.length; i++) {
-            let pending = pendingNodes[i];
-            if (pending.task === "remove") {
-                pending.node.remove();
-            }
-        }
-    };
-    
-    
-    function loop(arr, callback) {
-        for (let i = 0; i < arr.length; i++) {
-            callback.call(arr[i], i);
-        }
     }
 
 
